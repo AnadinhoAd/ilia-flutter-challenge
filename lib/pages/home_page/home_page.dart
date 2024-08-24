@@ -1,7 +1,8 @@
 import 'dart:developer';
-import '../widgets/widgets.dart';
+
 import 'package:flutter/material.dart';
-import 'package:movie_catalog/app_colors.dart';
+import 'package:movie_catalog/themes/app_colors.dart';
+import 'package:movie_catalog/widgets/widgets.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -10,8 +11,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage>
-    with SingleTickerProviderStateMixin {
+class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
   final FocusNode searchBarFocusNode = FocusNode();
   final FocusNode filterButtonFocusNode = FocusNode();
   late AnimationController filterBottomSheetController;
@@ -75,8 +75,7 @@ class _HomePageState extends State<HomePage>
                         ),
                         const HSpacer(16.0),
                         FilterButton(
-                          filterBottomSheetController:
-                              filterBottomSheetController,
+                          filterBottomSheetController: filterBottomSheetController,
                           categoryList: categoryList,
                           constraints: constraints,
                         ),
@@ -150,6 +149,9 @@ class _FilterButtonState extends State<FilterButton> {
           ),
         ),
         child: IconButton(
+          icon: const Icon(
+            Icons.filter_list_sharp,
+          ),
           onPressed: () async {
             setState(() {
               isFilterActive = true;
@@ -175,32 +177,35 @@ class _FilterButtonState extends State<FilterButton> {
                       ),
                     ),
                     const VSpacer(24.0),
-                    Wrap(
-                      spacing: 8.0,
-                      runSpacing: 8.0,
-                      children: widget.categoryList
-                          .map(
-                            (category) => Container(
-                              padding: const EdgeInsets.all(
-                                8.0,
-                              ),
-                              decoration: BoxDecoration(
-                                color: AppColors.gray,
-                                borderRadius: const BorderRadius.all(
-                                  Radius.circular(
-                                    32.0,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Wrap(
+                        spacing: 8.0,
+                        runSpacing: 8.0,
+                        children: widget.categoryList
+                            .map(
+                              (category) => Container(
+                                padding: const EdgeInsets.all(
+                                  8.0,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: AppColors.gray,
+                                  borderRadius: const BorderRadius.all(
+                                    Radius.circular(
+                                      32.0,
+                                    ),
+                                  ),
+                                ),
+                                child: Text(
+                                  category,
+                                  style: TextStyle(
+                                    color: AppColors.silver,
                                   ),
                                 ),
                               ),
-                              child: Text(
-                                category,
-                                style: TextStyle(
-                                  color: AppColors.silver,
-                                ),
-                              ),
-                            ),
-                          )
-                          .toList(),
+                            )
+                            .toList(),
+                      ),
                     ),
                     const VSpacer(64.0),
                   ],
@@ -212,9 +217,6 @@ class _FilterButtonState extends State<FilterButton> {
               }),
             );
           },
-          icon: const Icon(
-            Icons.filter_list_sharp,
-          ),
         ),
       ),
     );
