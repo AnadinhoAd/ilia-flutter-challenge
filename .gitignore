@@ -1,6 +1,9 @@
 # Created by https://www.toptal.com/developers/gitignore/api/flutter
 # Edit at https://www.toptal.com/developers/gitignore?templates=flutter
 
+### Secrets ###
+lib/core/secrets
+
 ### Flutter ###
 # Flutter/Dart/Pub related
 **/doc/api/
