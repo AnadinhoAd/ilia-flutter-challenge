@@ -1,4 +1,5 @@
-import 'package:movie_catalog/features/movies_list/domain/entities/entities.dart';
+import 'package:movie_catalog/features/movies_list/domain/entities/dates.dart';
+import 'package:movie_catalog/features/movies_list/domain/entities/movie.dart';
 
 class TheaterMoviesResponse {
   final Dates dates;

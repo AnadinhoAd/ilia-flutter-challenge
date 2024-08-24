@@ -1,28 +1,37 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:movie_catalog/features/movies_list/domain/entities/theater_movies_response.dart';
 
 import 'models.dart';
 
-part 'theater_movies_response_model.g.dart';
-
-@JsonSerializable(explicitToJson: true)
-class TheaterMoviesResponseModel {
-  final DatesModel dates;
-  final int page;
-  final List<MovieModel> results;
-  @JsonKey(name: 'total_pages')
-  final int totalPages;
-  @JsonKey(name: 'total_results')
-  final int totalResults;
-
+class TheaterMoviesResponseModel extends TheaterMoviesResponse {
   const TheaterMoviesResponseModel({
-    required this.dates,
-    required this.page,
-    required this.results,
-    required this.totalPages,
-    required this.totalResults,
+    required super.dates,
+    required super.page,
+    required super.results,
+    required super.totalPages,
+    required super.totalResults,
   });
 
-  factory TheaterMoviesResponseModel.fromJson(Map<String, dynamic> json) => _$TheaterMoviesResponseModelFromJson(json);
+  factory TheaterMoviesResponseModel.fromJson(Map<String, dynamic> json) => TheaterMoviesResponseModel(
+        dates: DatesModel.fromJson(json['dates'] as Map<String, dynamic>),
+        page: json['page'] as int,
+        results: (json['results'] as List<dynamic>).map((movie) => MovieModel.fromJson(movie)).toList(),
+        totalPages: json['total_pages'] as int,
+        totalResults: json['total_results'] as int,
+      );
 
-  Map<String, dynamic> toJson() => _$TheaterMoviesResponseModelToJson(this);
+  TheaterMoviesResponseModel copyWith({
+    DatesModel? dates,
+    int? page,
+    List<MovieModel>? results,
+    int? totalPages,
+    int? totalResults,
+  }) {
+    return TheaterMoviesResponseModel(
+      dates: dates ?? this.dates,
+      page: page ?? this.page,
+      results: results ?? this.results,
+      totalPages: totalPages ?? this.totalPages,
+      totalResults: totalResults ?? this.totalResults,
+    );
+  }
 }

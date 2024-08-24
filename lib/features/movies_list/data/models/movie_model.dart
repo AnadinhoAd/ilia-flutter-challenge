@@ -1,50 +1,51 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:movie_catalog/features/movies_list/domain/entities/movie.dart';
 
-part 'movie_model.g.dart';
-
-@JsonSerializable(explicitToJson: true)
-class MovieModel {
-  final bool? adult;
-  @JsonKey(name: 'backdrop_path')
-  final String? backdropPath;
-  @JsonKey(name: 'genre_ids')
-  final List<int>? genreIds;
-  final int? id;
-  @JsonKey(name: 'original_language')
-  final String? originalLanguage;
-  @JsonKey(name: 'original_title')
-  final String? originalTitle;
-  final String? overview;
-  final double? popularity;
-  @JsonKey(name: 'poster_path')
-  final String? posterPath;
-  @JsonKey(name: 'release_date')
-  final String? releaseDate;
-  final String? title;
-  final bool? video;
-  @JsonKey(name: 'vote_average')
-  final double? voteAverage;
-  @JsonKey(name: 'vote_count')
-  final int? voteCount;
-
+class MovieModel extends Movie {
   const MovieModel({
-    this.adult,
-    this.id,
-    this.originalLanguage,
-    this.originalTitle,
-    this.overview,
-    this.popularity,
-    this.posterPath,
-    this.releaseDate,
-    this.title,
-    this.video,
-    this.voteAverage,
-    this.voteCount,
-    this.genreIds,
-    this.backdropPath,
+    required super.id,
+    required super.posterPath,
+    required super.genreIds,
+    required super.adult,
+    super.overview,
+    super.popularity,
+    super.releaseDate,
+    super.title,
+    super.voteAverage,
   });
 
-  factory MovieModel.fromJson(Map<String, dynamic> json) => _$MovieModelFromJson(json);
+  factory MovieModel.fromJson(Map<String, dynamic> json) => MovieModel(
+        id: json['id'] as int,
+        posterPath: json['poster_path'] as String,
+        genreIds: json['genre_ids'] as List<int>,
+        adult: json['adult'] as bool,
+        overview: json['overview'] as String?,
+        popularity: json['popularity'] as double?,
+        releaseDate: json['release_date'] as String?,
+        title: json['title'] as String?,
+        voteAverage: json['vote_average'] as double?,
+      );
 
-  Map<String, dynamic> toJson() => _$MovieModelToJson(this);
+  MovieModel copyWith({
+    int? id,
+    String? posterPath,
+    List<int>? genreIds,
+    bool? adult,
+    String? overview,
+    double? popularity,
+    String? releaseDate,
+    String? title,
+    double? voteAverage,
+  }) {
+    return MovieModel(
+      id: id ?? this.id,
+      posterPath: posterPath ?? this.posterPath,
+      genreIds: genreIds ?? this.genreIds,
+      adult: adult ?? this.adult,
+      overview: overview ?? this.overview,
+      popularity: popularity ?? this.popularity,
+      releaseDate: releaseDate ?? this.releaseDate,
+      title: title ?? this.title,
+      voteAverage: voteAverage ?? this.voteAverage,
+    );
+  }
 }
