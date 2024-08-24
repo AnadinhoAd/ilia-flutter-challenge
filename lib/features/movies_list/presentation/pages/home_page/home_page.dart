@@ -1,8 +1,8 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:movie_catalog/themes/app_colors.dart';
-import 'package:movie_catalog/widgets/widgets.dart';
+import 'package:movie_catalog/core/theme/app_pallete.dart';
+import 'package:movie_catalog/design_system/widgets/widgets.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,6 +15,14 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   final FocusNode searchBarFocusNode = FocusNode();
   final FocusNode filterButtonFocusNode = FocusNode();
   late AnimationController filterBottomSheetController;
+
+  @override
+  void dispose() {
+    searchBarFocusNode.dispose();
+    filterButtonFocusNode.dispose();
+    filterBottomSheetController.dispose();
+    super.dispose();
+  }
 
   final categoryList = [
     'Comedy',
@@ -53,7 +61,6 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: AppColors.eerieBlack,
         body: Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: 16.0,
@@ -94,7 +101,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                       25,
                       (index) => Container(
                         decoration: BoxDecoration(
-                          color: AppColors.silver,
+                          color: AppPallete.silver,
                           borderRadius: BorderRadius.circular(
                             8.0,
                           ),
@@ -141,9 +148,9 @@ class _FilterButtonState extends State<FilterButton> {
         decoration: BoxDecoration(
           border: Border.all(
             width: 2,
-            color: isFilterActive ? AppColors.silver : AppColors.gray,
+            color: isFilterActive ? AppPallete.silver : AppPallete.gray,
           ),
-          color: AppColors.gray,
+          color: AppPallete.gray,
           borderRadius: BorderRadius.circular(
             8.0,
           ),
@@ -158,11 +165,11 @@ class _FilterButtonState extends State<FilterButton> {
             });
 
             await showModalBottomSheet(
-              backgroundColor: AppColors.eerieBlack,
+              backgroundColor: AppPallete.eerieBlack,
               showDragHandle: true,
               context: context,
               builder: (context) => BottomSheet(
-                backgroundColor: AppColors.eerieBlack,
+                backgroundColor: AppPallete.eerieBlack,
                 animationController: widget.filterBottomSheetController,
                 onClosing: () {},
                 builder: (context) => Column(
@@ -173,7 +180,7 @@ class _FilterButtonState extends State<FilterButton> {
                     Text(
                       'Filter categories:',
                       style: TextStyle(
-                        color: AppColors.silver,
+                        color: AppPallete.silver,
                       ),
                     ),
                     const VSpacer(24.0),
@@ -189,7 +196,7 @@ class _FilterButtonState extends State<FilterButton> {
                                   8.0,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: AppColors.gray,
+                                  color: AppPallete.gray,
                                   borderRadius: const BorderRadius.all(
                                     Radius.circular(
                                       32.0,
@@ -199,7 +206,7 @@ class _FilterButtonState extends State<FilterButton> {
                                 child: Text(
                                   category,
                                   style: TextStyle(
-                                    color: AppColors.silver,
+                                    color: AppPallete.silver,
                                   ),
                                 ),
                               ),
@@ -252,7 +259,7 @@ class _SearchBarState extends State<SearchBar> {
         8.0,
       ),
       child: Container(
-        color: AppColors.gray,
+        color: AppPallete.gray,
         child: TextField(
           onChanged: (value) {
             widget.onChanged(value);
@@ -261,15 +268,15 @@ class _SearchBarState extends State<SearchBar> {
           controller: searchBarTextController,
           textAlignVertical: TextAlignVertical.bottom,
           autofillHints: const [],
-          cursorColor: AppColors.silver,
+          cursorColor: AppPallete.silver,
           focusNode: widget.searchBarFocusNode,
           onTapOutside: (event) => widget.searchBarFocusNode.unfocus(),
           decoration: InputDecoration(
             hintText: 'Search',
-            fillColor: AppColors.gray,
+            fillColor: AppPallete.gray,
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: AppColors.silver,
+                color: AppPallete.silver,
                 width: 2,
               ),
               borderRadius: BorderRadius.circular(
