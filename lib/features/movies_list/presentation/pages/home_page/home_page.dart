@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_catalog/core/constants/constants.dart';
 
-import 'package:movie_catalog/core/theme/app_pallete.dart';
 import 'package:movie_catalog/design_system/widgets/widgets.dart';
 import 'package:movie_catalog/features/movies_list/domain/entities/movie.dart';
 import 'package:movie_catalog/features/movies_list/presentation/cubits/home_page_cubit.dart';
@@ -21,6 +20,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   final FocusNode filterButtonFocusNode = FocusNode();
   final ScrollController pageScrollController = ScrollController();
   late AnimationController filterBottomSheetController;
+  late AnimationController shimmerController;
   late HomePageCubit _cubit;
   List<Movie> filteredMovieList = [];
   bool isSearching = false;
@@ -154,36 +154,40 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                     ),
                     const VSpacer(16.0),
                     Expanded(
-                      child: GridView.builder(
-                        shrinkWrap: true,
-                        controller: pageScrollController,
-                        itemCount: filteredMovieList.length,
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          childAspectRatio: 150 / 225,
-                          crossAxisSpacing: 8.0,
-                          mainAxisSpacing: 8.0,
-                        ),
-                        itemBuilder: (context, index) {
-                          final image = NetworkImage(
-                            '$imageBaseUrl${filteredMovieList[index].posterPath}',
-                          );
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8.0),
+                        child: GridView.builder(
+                          hitTestBehavior: HitTestBehavior.translucent,
+                          clipBehavior: Clip.antiAlias,
+                          shrinkWrap: true,
+                          controller: pageScrollController,
+                          itemCount: filteredMovieList.length,
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            childAspectRatio: 150 / 225,
+                            crossAxisSpacing: 8.0,
+                            mainAxisSpacing: 8.0,
+                          ),
+                          itemBuilder: (context, index) {
+                            final image = NetworkImage(
+                              '$imageBaseUrl${filteredMovieList[index].posterPath}',
+                            );
 
-                          return Container(
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                fit: BoxFit.fitHeight,
-                                image: image,
+                            return Container(
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  fit: BoxFit.fill,
+                                  image: image,
+                                ),
+                                borderRadius: BorderRadius.circular(
+                                  8.0,
+                                ),
                               ),
-                              color: AppPallete.silver,
-                              borderRadius: BorderRadius.circular(
-                                8.0,
-                              ),
-                            ),
-                            height: 225,
-                            width: 150,
-                          );
-                        },
+                              height: 225,
+                              width: 150,
+                            );
+                          },
+                        ),
                       ),
                     ),
                     const VSpacer(16.0),

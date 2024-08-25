@@ -37,6 +37,8 @@ class _FilterButtonState extends State<FilterButton> {
           ),
         ),
         child: IconButton(
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
           icon: const Icon(
             Icons.filter_list_sharp,
           ),
@@ -53,21 +55,23 @@ class _FilterButtonState extends State<FilterButton> {
                 backgroundColor: AppPallete.eerieBlack,
                 animationController: widget.filterBottomSheetController,
                 onClosing: () {},
-                builder: (context) => Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const VSpacer(24.0),
-                    Text(
-                      'Filter categories:',
-                      style: TextStyle(
-                        color: AppPallete.silver,
+                builder: (context) => Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const VSpacer(24.0),
+                      Text(
+                        'Filter categories:',
+                        style: TextStyle(
+                          color: AppPallete.silver,
+                        ),
                       ),
-                    ),
-                    const VSpacer(24.0),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Wrap(
+                      const VSpacer(24.0),
+                      Wrap(
                         spacing: 8.0,
                         runSpacing: 8.0,
                         children: widget.categoryList
@@ -94,9 +98,9 @@ class _FilterButtonState extends State<FilterButton> {
                             )
                             .toList(),
                       ),
-                    ),
-                    const VSpacer(64.0),
-                  ],
+                      const VSpacer(64.0),
+                    ],
+                  ),
                 ),
               ),
             ).then(
