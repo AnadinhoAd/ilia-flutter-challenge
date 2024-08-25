@@ -13,8 +13,13 @@ final class HomePageLoadingState extends HomePageState {
   List<Object?> get props => [];
 }
 
+final class HomePageNewMoviesLoadingState extends HomePageState {
+  @override
+  List<Object?> get props => [];
+}
+
 final class HomePageLoadedState extends HomePageState {
-  final TheaterMoviesResponse theaterMoviesResponse;
+  final List<Movie> theaterMoviesResponse;
 
   HomePageLoadedState(this.theaterMoviesResponse);
 
