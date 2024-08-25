@@ -23,7 +23,7 @@ class DioClient {
     BaseOptions(
       baseUrl: apiBaseUrl,
       queryParameters: {
-        'api_key': '272d06dc4ffb8bb135e00c83be1e7dc2',
+        'api_key': '',
         'language': 'pt-BR',
         'region': 'br',
       },
