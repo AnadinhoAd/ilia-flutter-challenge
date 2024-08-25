@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:movie_catalog/core/constants/constants.dart';
 import 'package:movie_catalog/features/movie_details/data/models/movie_details_model.dart';
 import 'package:movie_catalog/features/movie_details/data/models/movie_videos_response_model.dart';
@@ -23,7 +24,7 @@ class DioClient {
     BaseOptions(
       baseUrl: apiBaseUrl,
       queryParameters: {
-        'api_key': '',
+        'api_key': dotenv.env['API_KEY'],
         'language': 'pt-BR',
         'region': 'br',
       },

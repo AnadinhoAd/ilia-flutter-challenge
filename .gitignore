@@ -4,6 +4,9 @@
 ### Secrets ###
 lib/core/secrets
 
+# exclude all .env files from source control
+*.env
+
 ### Flutter ###
 # Flutter/Dart/Pub related
 **/doc/api/
