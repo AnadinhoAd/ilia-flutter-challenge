@@ -1,6 +1,6 @@
 class Movie {
   final int id;
-  final String posterPath;
+  final String? posterPath;
   final List<int> genreIds;
   final bool adult;
   final String? overview;
@@ -11,9 +11,9 @@ class Movie {
 
   const Movie({
     required this.id,
-    required this.posterPath,
     required this.genreIds,
     required this.adult,
+    this.posterPath,
     this.overview,
     this.popularity,
     this.releaseDate,

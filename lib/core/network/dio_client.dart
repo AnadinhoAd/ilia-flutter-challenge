@@ -28,8 +28,10 @@ class DioClient {
 
   Future<TheaterMoviesResponseModel> getTheaterMovies(int page) async {
     try {
-      final response = await dio.get('${CallPath.theaterMovies.path}');
+      dio.options.queryParameters.addEntries([MapEntry('page', page)]);
+      final response = await dio.get(CallPath.theaterMovies.path);
       final theaterMovies = TheaterMoviesResponseModel.fromJson(response.data);
+      dio.options.queryParameters.remove('page');
 
       return theaterMovies;
     } on DioException {
