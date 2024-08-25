@@ -6,6 +6,7 @@ class MovieDetails {
   final int runtime;
   final double voteAverage;
   final String? posterPath;
+  final String? backdropPath;
   final bool? adult;
   final int? budget;
   final List<Genre>? genres;
@@ -27,6 +28,7 @@ class MovieDetails {
     this.imdbId,
     this.popularity,
     this.posterPath,
+    this.backdropPath,
     this.releaseDate,
     this.status,
   });
