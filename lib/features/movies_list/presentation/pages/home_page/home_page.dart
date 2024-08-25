@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_catalog/core/constants/constants.dart';
 
 import 'package:movie_catalog/design_system/widgets/widgets.dart';
+import 'package:movie_catalog/features/movie_details/presentation/pages/movie_details_page.dart';
 import 'package:movie_catalog/features/movies_list/domain/entities/movie.dart';
 import 'package:movie_catalog/features/movies_list/presentation/cubits/home_page_cubit.dart';
 import 'package:movie_catalog/features/movies_list/presentation/widgets/filter_button.dart';
@@ -97,9 +98,9 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: BlocBuilder<HomePageCubit, HomePageState>(
+    return Scaffold(
+      body: SafeArea(
+        child: BlocBuilder<HomePageCubit, HomePageState>(
           bloc: _cubit,
           builder: (context, state) {
             if (state is HomePageLoadingState) {
@@ -173,18 +174,28 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                               '$imageBaseUrl${filteredMovieList[index].posterPath}',
                             );
 
-                            return Container(
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  fit: BoxFit.fill,
-                                  image: image,
-                                ),
-                                borderRadius: BorderRadius.circular(
-                                  8.0,
+                            return GestureDetector(
+                              onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => MovieDetailsPage(
+                                    id: filteredMovieList[index].id,
+                                  ),
                                 ),
                               ),
-                              height: 225,
-                              width: 150,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    fit: BoxFit.fill,
+                                    image: image,
+                                  ),
+                                  borderRadius: BorderRadius.circular(
+                                    8.0,
+                                  ),
+                                ),
+                                height: 225,
+                                width: 150,
+                              ),
                             );
                           },
                         ),
