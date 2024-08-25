@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:movie_catalog/core/constants/constants.dart';
 import 'package:movie_catalog/features/movie_details/data/models/movie_details_model.dart';
@@ -8,7 +10,7 @@ import 'package:movie_catalog/features/movies_list/data/models/models.dart';
 enum CallPath {
   theaterMovies('/movie/now_playing'),
   genres('/genre/movie/list'),
-  movieDetail('/genre/movie/'),
+  movieDetail('/movie'),
   movieVideos('/videos');
 
   final String path;
@@ -45,26 +47,24 @@ class DioClient {
 
   Future<MovieDetails> getMovieDetails(int id) async {
     try {
-      dio.options.queryParameters.addEntries([MapEntry('id', id)]);
-      final response = await dio.get(CallPath.movieDetail.path);
+      final response = await dio.get('${CallPath.movieDetail.path}/$id');
       final movieDetails = MovieDetailsModel.fromJson(response.data);
-      dio.options.queryParameters.remove('id');
 
       return movieDetails;
-    } on DioException {
+    } on DioException catch (e) {
+      log(e.toString());
       rethrow;
     }
   }
 
   Future<MovieVideosResponseModel> getMovieVideos(int id) async {
     try {
-      dio.options.queryParameters.addEntries([MapEntry('id', id)]);
-      final response = await dio.get(CallPath.movieVideos.path);
+      final response = await dio.get('/movie/$id${CallPath.movieVideos.path}');
       final movieVideos = MovieVideosResponseModel.fromJson(response.data);
-      dio.options.queryParameters.remove('id');
 
       return movieVideos;
-    } on DioException {
+    } on DioException catch (e) {
+      log(e.toString());
       rethrow;
     }
   }
