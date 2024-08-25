@@ -7,4 +7,5 @@ class AppPallete {
   static Color jet = const Color(0xff3D3B3C);
   static Color darkJet = const Color(0xff323031);
   static Color eerieBlack = const Color(0xff222222);
+  static Color white = Colors.white;
 }
