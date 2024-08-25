@@ -22,24 +22,38 @@ class HomePageCubit extends Cubit<HomePageState> {
       (l) => emit(HomePageInitialState()),
       (r) {
         currentTheaterMovies.addAll(r.results);
-        emit(HomePageLoadedState(currentTheaterMovies));
+        emit(
+          HomePageLoadedState(
+            theaterMoviesResponse: currentTheaterMovies,
+            isLoadingMoreMovies: false,
+          ),
+        );
       },
     );
   }
 
   Future fetchMoreMovies() async {
+    emit(
+      HomePageLoadedState(
+        theaterMoviesResponse: currentTheaterMovies,
+        isLoadingMoreMovies: true,
+      ),
+    );
+
     _page++;
 
     final theaterMoviesResponse = await getMoviesUseCase.call(_page);
 
-    await Future.delayed(const Duration(seconds: 2));
-
     theaterMoviesResponse.fold(
       (l) => emit(HomePageInitialState()),
-      (r) {
+      (r) async {
         currentTheaterMovies.addAll(r.results);
-        emit(HomePageNewMoviesLoadingState());
-        emit(HomePageLoadedState(currentTheaterMovies));
+
+        await Future.delayed(const Duration(seconds: 2));
+        emit(HomePageLoadedState(
+          theaterMoviesResponse: currentTheaterMovies,
+          isLoadingMoreMovies: false,
+        ));
       },
     );
   }

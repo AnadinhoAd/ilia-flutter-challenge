@@ -20,9 +20,16 @@ final class HomePageNewMoviesLoadingState extends HomePageState {
 
 final class HomePageLoadedState extends HomePageState {
   final List<Movie> theaterMoviesResponse;
+  final bool isLoadingMoreMovies;
 
-  HomePageLoadedState(this.theaterMoviesResponse);
+  HomePageLoadedState({
+    required this.theaterMoviesResponse,
+    required this.isLoadingMoreMovies,
+  });
 
   @override
-  List<Object?> get props => [theaterMoviesResponse];
+  List<Object?> get props => [
+        theaterMoviesResponse,
+        isLoadingMoreMovies,
+      ];
 }

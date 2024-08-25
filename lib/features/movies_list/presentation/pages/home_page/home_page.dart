@@ -202,10 +202,11 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                       ),
                     ),
                     const VSpacer(16.0),
-                    if (state is HomePageNewMoviesLoadingState) ...[
+                    if (state.isLoadingMoreMovies) ...[
                       const Center(
                         child: CircularProgressIndicator(),
-                      )
+                      ),
+                      const VSpacer(16.0),
                     ]
                   ],
                 ),
