@@ -1,8 +1,12 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_catalog/core/constants/constants.dart';
+
 import 'package:movie_catalog/core/theme/app_pallete.dart';
 import 'package:movie_catalog/design_system/widgets/widgets.dart';
+import 'package:movie_catalog/features/movies_list/presentation/cubits/home_page_cubit.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,6 +19,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   final FocusNode searchBarFocusNode = FocusNode();
   final FocusNode filterButtonFocusNode = FocusNode();
   late AnimationController filterBottomSheetController;
+  late HomePageCubit _cubit;
 
   @override
   void dispose() {
@@ -55,66 +60,90 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   void initState() {
     super.initState();
     filterBottomSheetController = AnimationController(vsync: this);
+    _cubit = HomePageCubit();
+    _cubit.init();
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 16.0,
-          ),
-          child: Column(
-            children: [
-              const VSpacer(16.0),
-              SizedBox(
-                height: 50,
-                child: LayoutBuilder(
-                  builder: (context, constraints) {
-                    return Row(
-                      children: [
-                        Expanded(
-                          child: SearchBar(
-                            onChanged: (value) => log(value),
-                            searchBarFocusNode: searchBarFocusNode,
-                          ),
-                        ),
-                        const HSpacer(16.0),
-                        FilterButton(
-                          filterBottomSheetController: filterBottomSheetController,
-                          categoryList: categoryList,
-                          constraints: constraints,
-                        ),
-                      ],
-                    );
-                  },
+        body: BlocBuilder<HomePageCubit, HomePageState>(
+          bloc: _cubit,
+          builder: (context, state) {
+            if (state is HomePageLoadingState) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+
+            if (state is HomePageLoadedState) {
+              final movies = state.theaterMoviesResponse.results;
+              return Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0,
                 ),
-              ),
-              const VSpacer(16.0),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Wrap(
-                    spacing: 8.0,
-                    runSpacing: 8.0,
-                    children: List.generate(
-                      25,
-                      (index) => Container(
-                        decoration: BoxDecoration(
-                          color: AppPallete.silver,
-                          borderRadius: BorderRadius.circular(
-                            8.0,
-                          ),
-                        ),
-                        height: 220,
-                        width: 170,
+                child: Column(
+                  children: [
+                    const VSpacer(16.0),
+                    SizedBox(
+                      height: 50,
+                      child: LayoutBuilder(
+                        builder: (context, constraints) {
+                          return Row(
+                            children: [
+                              Expanded(
+                                child: SearchBar(
+                                  onChanged: (value) => log(value),
+                                  searchBarFocusNode: searchBarFocusNode,
+                                ),
+                              ),
+                              const HSpacer(16.0),
+                              FilterButton(
+                                filterBottomSheetController: filterBottomSheetController,
+                                categoryList: categoryList,
+                                constraints: constraints,
+                              ),
+                            ],
+                          );
+                        },
                       ),
                     ),
-                  ),
+                    const VSpacer(16.0),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Wrap(
+                            spacing: 8.0,
+                            runSpacing: 8.0,
+                            children: movies.map(
+                              (movie) {
+                                final image = NetworkImage(
+                                  '$imageBaseUrl${movie.posterPath}',
+                                );
+                                return Container(
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      fit: BoxFit.fitHeight,
+                                      image: image,
+                                    ),
+                                    color: AppPallete.silver,
+                                    borderRadius: BorderRadius.circular(
+                                      8.0,
+                                    ),
+                                  ),
+                                  height: 225,
+                                  width: 150,
+                                );
+                              },
+                            ).toList()),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          ),
+              );
+            }
+            return const SizedBox.shrink();
+          },
         ),
       ),
     );

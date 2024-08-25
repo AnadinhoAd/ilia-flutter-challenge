@@ -16,7 +16,7 @@ class MovieModel extends Movie {
   factory MovieModel.fromJson(Map<String, dynamic> json) => MovieModel(
         id: json['id'] as int,
         posterPath: json['poster_path'] as String,
-        genreIds: json['genre_ids'] as List<int>,
+        genreIds: List<int>.from(json['genre_ids']),
         adult: json['adult'] as bool,
         overview: json['overview'] as String?,
         popularity: json['popularity'] as double?,

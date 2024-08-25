@@ -23,13 +23,12 @@ class DioClient {
       },
       connectTimeout: const Duration(seconds: 10),
       receiveTimeout: const Duration(seconds: 10),
-      responseType: ResponseType.json,
     ),
   );
 
   Future<TheaterMoviesResponseModel> getTheaterMovies(int page) async {
     try {
-      final response = await dio.get('${CallPath.theaterMovies.path}/$page');
+      final response = await dio.get('${CallPath.theaterMovies.path}');
       final theaterMovies = TheaterMoviesResponseModel.fromJson(response.data);
 
       return theaterMovies;
