@@ -48,4 +48,8 @@ The ILIA Flutter Challenge app is a demonstration of best practices in Flutter d
 
 5. Now replace 'yourapikey' value with your actual API Key
 
-6. And run the project with vscode or build it to install in a device
+6. Now run the command:
+   ```bash
+   flutter pub get
+
+7. And run the project with vscode or build it to install in a device
