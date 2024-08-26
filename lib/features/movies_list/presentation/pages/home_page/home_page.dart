@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:movie_catalog/core/common/entities/genre.dart';
 import 'package:movie_catalog/core/constants/constants.dart';
 import 'package:movie_catalog/core/theme/app_pallete.dart';
-
 import 'package:movie_catalog/design_system/widgets/widgets.dart';
 import 'package:movie_catalog/features/movie_details/presentation/pages/movie_details_page.dart';
 import 'package:movie_catalog/features/movies_list/domain/entities/movie.dart';
