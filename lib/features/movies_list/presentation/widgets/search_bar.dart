@@ -45,7 +45,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
           focusNode: widget.searchBarFocusNode,
           onTapOutside: (event) => widget.searchBarFocusNode.unfocus(),
           decoration: InputDecoration(
-            hintText: 'Search',
+            hintText: 'Buscar',
             fillColor: AppPallete.gray,
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(

@@ -2,11 +2,14 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:movie_catalog/core/common/entities/genre.dart';
 import 'package:movie_catalog/core/constants/constants.dart';
 import 'package:movie_catalog/features/movie_details/data/models/movie_details_model.dart';
 import 'package:movie_catalog/features/movie_details/data/models/movie_videos_response_model.dart';
 import 'package:movie_catalog/features/movie_details/domain/entities/movie_details.dart';
+import 'package:movie_catalog/features/movie_details/domain/entities/movie_videos_response.dart';
 import 'package:movie_catalog/features/movies_list/data/models/models.dart';
+import 'package:movie_catalog/features/movies_list/domain/entities/theater_movies_response.dart';
 
 enum CallPath {
   theaterMovies('/movie/now_playing'),
@@ -33,7 +36,7 @@ class DioClient {
     ),
   );
 
-  Future<TheaterMoviesResponseModel> getTheaterMovies(int page) async {
+  Future<TheaterMoviesResponse> getTheaterMovies(int page) async {
     try {
       dio.options.queryParameters.addEntries([MapEntry('page', page)]);
       final response = await dio.get(CallPath.theaterMovies.path);
@@ -58,10 +61,22 @@ class DioClient {
     }
   }
 
-  Future<MovieVideosResponseModel> getMovieVideos(int id) async {
+  Future<MovieVideosResponse> getMovieVideos(int id) async {
     try {
       final response = await dio.get('/movie/$id${CallPath.movieVideos.path}');
       final movieVideos = MovieVideosResponseModel.fromJson(response.data);
+
+      return movieVideos;
+    } on DioException catch (e) {
+      log(e.toString());
+      rethrow;
+    }
+  }
+
+  Future<Genre> getGenres() async {
+    try {
+      final response = await dio.get(CallPath.movieVideos.path);
+      final movieVideos = GenreModel.fromJson(response.data);
 
       return movieVideos;
     } on DioException catch (e) {
