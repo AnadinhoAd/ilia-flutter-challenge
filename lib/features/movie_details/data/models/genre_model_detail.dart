@@ -1,13 +1,13 @@
 import 'package:movie_catalog/core/common/entities/genre.dart';
 
-class GenreModel extends Genre {
-  GenreModel({
+class GenreModelDetail extends Genre {
+  GenreModelDetail({
     required super.id,
     required super.name,
   });
 
-  factory GenreModel.fromJson(Map<String, dynamic> json) {
-    return GenreModel(
+  factory GenreModelDetail.fromJson(Map<String, dynamic> json) {
+    return GenreModelDetail(
       id: json['id'],
       name: json['name'],
     );

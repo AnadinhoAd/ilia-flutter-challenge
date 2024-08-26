@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:movie_catalog/core/constants/constants.dart';
 import 'package:movie_catalog/core/theme/app_pallete.dart';
 import 'package:movie_catalog/design_system/widgets/widgets.dart';
@@ -25,7 +26,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
   @override
   void initState() {
     super.initState();
-    _cubit = MovieDetailsPageCubit();
+    _cubit = GetIt.I.get();
     _cubit.init(widget.id);
   }
 
@@ -72,6 +73,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                       onPressed: () => Navigator.of(context).pop(),
                       icon: const Icon(
                         Icons.chevron_left_outlined,
+                        size: 48.0,
                       ),
                     ),
                     if (state.movieVideosResponse.results.isNotEmpty) ...[

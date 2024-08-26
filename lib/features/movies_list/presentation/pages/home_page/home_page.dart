@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:movie_catalog/core/common/entities/genre.dart';
 import 'package:movie_catalog/core/constants/constants.dart';
+import 'package:movie_catalog/core/theme/app_pallete.dart';
 
 import 'package:movie_catalog/design_system/widgets/widgets.dart';
 import 'package:movie_catalog/features/movie_details/presentation/pages/movie_details_page.dart';
@@ -25,6 +28,8 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   late HomePageCubit _cubit;
   List<Movie> filteredMovieList = [];
   bool isSearching = false;
+  bool showFilter = false;
+  List<String> selectedFilters = [];
 
   @override
   void dispose() {
@@ -34,38 +39,11 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     super.dispose();
   }
 
-  final categoryList = [
-    'Comedy',
-    'Drama',
-    'Horror',
-    'Romance',
-    'Action',
-    'Animation',
-    'Comedy',
-    'Drama',
-    'Horror',
-    'Romance',
-    'Action',
-    'Animation',
-    'Comedy',
-    'Drama',
-    'Horror',
-    'Romance',
-    'Action',
-    'Animation',
-    'Comedy',
-    'Drama',
-    'Horror',
-    'Romance',
-    'Action',
-    'Animation',
-  ];
-
   @override
   void initState() {
     super.initState();
     filterBottomSheetController = AnimationController(vsync: this);
-    _cubit = HomePageCubit();
+    _cubit = GetIt.I.get();
     _cubit.init();
     pageScrollController.addListener(() => _onScroll());
   }
@@ -127,6 +105,18 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                 child: Column(
                   children: [
                     const VSpacer(16.0),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                      child: Container(
+                        height: 100,
+                        decoration: const BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage('assets/app_logo_text.png'),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const VSpacer(16.0),
                     SizedBox(
                       height: 50,
                       child: LayoutBuilder(
@@ -145,14 +135,47 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                               const HSpacer(16.0),
                               FilterButton(
                                 filterBottomSheetController: filterBottomSheetController,
-                                categoryList: categoryList,
+                                categoryList: state.genres.map((genre) => genre.name).toList(),
                                 constraints: constraints,
+                                onTap: (isActive) => setState(() => showFilter = isActive),
                               ),
                             ],
                           );
                         },
                       ),
                     ),
+                    const VSpacer(16.0),
+                    if (showFilter) ...[
+                      Wrap(
+                        spacing: 8.0,
+                        runSpacing: 8.0,
+                        children: state.genres
+                            .map((genre) => genre.name)
+                            .toList()
+                            .map(
+                              (category) => Container(
+                                padding: const EdgeInsets.all(
+                                  8.0,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: AppPallete.gray,
+                                  borderRadius: const BorderRadius.all(
+                                    Radius.circular(
+                                      32.0,
+                                    ),
+                                  ),
+                                ),
+                                child: Text(
+                                  category,
+                                  style: TextStyle(
+                                    color: AppPallete.silver,
+                                  ),
+                                ),
+                              ),
+                            )
+                            .toList(),
+                      ),
+                    ],
                     const VSpacer(16.0),
                     Expanded(
                       child: ClipRRect(

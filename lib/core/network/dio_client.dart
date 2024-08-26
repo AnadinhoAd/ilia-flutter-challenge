@@ -8,6 +8,7 @@ import 'package:movie_catalog/features/movie_details/data/models/movie_details_m
 import 'package:movie_catalog/features/movie_details/data/models/movie_videos_response_model.dart';
 import 'package:movie_catalog/features/movie_details/domain/entities/movie_details.dart';
 import 'package:movie_catalog/features/movie_details/domain/entities/movie_videos_response.dart';
+import 'package:movie_catalog/features/movies_list/data/models/genre_response_model.dart';
 import 'package:movie_catalog/features/movies_list/data/models/models.dart';
 import 'package:movie_catalog/features/movies_list/domain/entities/theater_movies_response.dart';
 
@@ -73,12 +74,12 @@ class DioClient {
     }
   }
 
-  Future<Genre> getGenres() async {
+  Future<List<Genre>> getGenres() async {
     try {
-      final response = await dio.get(CallPath.movieVideos.path);
-      final movieVideos = GenreModel.fromJson(response.data);
+      final response = await dio.get(CallPath.genres.path);
+      final genresResponse = GenreResponseModel.fromJson(response.data);
 
-      return movieVideos;
+      return genresResponse.genres;
     } on DioException catch (e) {
       log(e.toString());
       rethrow;

@@ -9,10 +9,13 @@ import 'package:movie_catalog/features/movie_details/domain/use_cases/get_movie_
 part 'movie_details_page_state.dart';
 
 class MovieDetailsPageCubit extends Cubit<MovieDetailsPageState> {
-  GetMovieDetailsUseCase getMovieDetailsUseCase = GetMovieDetailsUseCase();
-  GetMovieVideosResponseUseCase getMovieVideosResponseUseCase = GetMovieVideosResponseUseCase();
+  GetMovieDetailsUseCase getMovieDetailsUseCase;
+  GetMovieVideosResponseUseCase getMovieVideosResponseUseCase;
 
-  MovieDetailsPageCubit() : super(MovieDetailsPageInitialState());
+  MovieDetailsPageCubit(
+    this.getMovieDetailsUseCase,
+    this.getMovieVideosResponseUseCase,
+  ) : super(MovieDetailsPageInitialState());
 
   Future init(int id) async {
     emit(MovieDetailsPageLoadingState());

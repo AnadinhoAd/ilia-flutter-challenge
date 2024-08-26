@@ -1,32 +1,50 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_catalog/core/common/entities/genre.dart';
+import 'package:movie_catalog/core/use_case/use_case.dart';
 import 'package:movie_catalog/features/movies_list/domain/entities/movie.dart';
+import 'package:movie_catalog/features/movies_list/domain/use_cases/get_genres_use_case.dart';
 import 'package:movie_catalog/features/movies_list/domain/use_cases/get_movies_use_case.dart';
 
 part 'home_page_state.dart';
 
 class HomePageCubit extends Cubit<HomePageState> {
-  final getMoviesUseCase = GetMoviesUseCase();
+  final GetMoviesUseCase getMoviesUseCase;
+  final GetGenresUseCase getGenresUseCase;
 
-  HomePageCubit() : super(HomePageInitialState());
+  HomePageCubit(
+    this.getMoviesUseCase,
+    this.getGenresUseCase,
+  ) : super(HomePageInitialState());
 
   int _page = 1;
   List<Movie> currentTheaterMovies = [];
+  List<Genre> currentGenres = [];
 
   Future init() async {
     emit(HomePageLoadingState());
     final theaterMoviesResponse = await getMoviesUseCase.call(_page);
+    final genres = await getGenresUseCase.call(NoParams());
 
     theaterMoviesResponse.fold(
       (l) => emit(HomePageInitialState()),
-      (r) {
-        currentTheaterMovies.addAll(r.results);
-        emit(
-          HomePageLoadedState(
-            theaterMoviesResponse: currentTheaterMovies,
-            isLoadingMoreMovies: false,
-          ),
+      (theaterMoviesResponseOnRight) {
+        genres.fold(
+          (l) => HomePageInitialState(),
+          (genresOnRight) {
+            currentTheaterMovies.addAll(theaterMoviesResponseOnRight.results);
+            currentGenres.addAll(genresOnRight.where(
+              (genresOnRightElement) => !currentGenres.contains(genresOnRightElement),
+            ));
+            emit(
+              HomePageLoadedState(
+                theaterMoviesResponse: currentTheaterMovies,
+                genres: genresOnRight,
+                isLoadingMoreMovies: false,
+              ),
+            );
+          },
         );
       },
     );
@@ -37,6 +55,7 @@ class HomePageCubit extends Cubit<HomePageState> {
       HomePageLoadedState(
         theaterMoviesResponse: currentTheaterMovies,
         isLoadingMoreMovies: true,
+        genres: currentGenres,
       ),
     );
 
@@ -53,6 +72,7 @@ class HomePageCubit extends Cubit<HomePageState> {
         emit(HomePageLoadedState(
           theaterMoviesResponse: currentTheaterMovies,
           isLoadingMoreMovies: false,
+          genres: currentGenres,
         ));
       },
     );

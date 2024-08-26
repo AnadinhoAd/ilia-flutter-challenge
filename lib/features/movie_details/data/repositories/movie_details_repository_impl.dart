@@ -6,7 +6,11 @@ import 'package:movie_catalog/features/movie_details/domain/entities/movie_detai
 import 'package:movie_catalog/features/movie_details/domain/repositories/movie_details_repository.dart';
 
 class MovieDetailsRepositoryImpl implements MovieDetailsRepository {
-  MovieDetailsRemoteDataSource movieDetailsRemoteDataSource = MovieDetailsRemoteDataSourceImpl();
+  final MovieDetailsRemoteDataSource movieDetailsRemoteDataSource;
+
+  const MovieDetailsRepositoryImpl(
+    this.movieDetailsRemoteDataSource,
+  );
 
   @override
   Future<Either<Failure, MovieDetails>> getMovieDetails({required int id}) async {

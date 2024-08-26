@@ -6,8 +6,11 @@ import 'package:movie_catalog/features/movie_details/domain/entities/movie_video
 import 'package:movie_catalog/features/movie_details/domain/repositories/movie_videos_response_repository.dart';
 
 class MovieVideosResponseRepositoryImpl implements MovieVideosResponseRepository {
-  MovieVideosResponseRemoteDataSource movieVideosResponseRemoteDataSource = MovieVideosResponseRemoteDataSourceImpl();
+  final MovieVideosResponseRemoteDataSource movieVideosResponseRemoteDataSource;
 
+  const MovieVideosResponseRepositoryImpl(
+    this.movieVideosResponseRemoteDataSource,
+  );
   @override
   Future<Either<Failure, MovieVideosResponse>> getMovieVideosResponse({required int id}) async {
     try {
