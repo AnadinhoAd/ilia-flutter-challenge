@@ -215,6 +215,16 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                                 height: 225,
                                 width: 150,
                               ),
+                              placeholder: (context, url) => Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: AppPallete.silver),
+                                  borderRadius: BorderRadius.circular(
+                                    8.0,
+                                  ),
+                                ),
+                                height: 225,
+                                width: 150,
+                              ),
                               errorWidget: (context, url, error) => const Icon(Icons.error),
                             ),
                           ),
