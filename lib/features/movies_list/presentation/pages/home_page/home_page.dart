@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -190,25 +191,22 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                             crossAxisSpacing: 8.0,
                             mainAxisSpacing: 8.0,
                           ),
-                          itemBuilder: (context, index) {
-                            final image = NetworkImage(
-                              '$imageBaseUrl${filteredMovieList[index].posterPath}',
-                            );
-
-                            return GestureDetector(
-                              onTap: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => MovieDetailsPage(
-                                    id: filteredMovieList[index].id,
-                                  ),
+                          itemBuilder: (context, index) => GestureDetector(
+                            onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MovieDetailsPage(
+                                  id: filteredMovieList[index].id,
                                 ),
                               ),
-                              child: Container(
+                            ),
+                            child: CachedNetworkImage(
+                              imageUrl: '$imageBaseUrl${filteredMovieList[index].posterPath}',
+                              imageBuilder: (context, imageProvider) => Container(
                                 decoration: BoxDecoration(
                                   image: DecorationImage(
                                     fit: BoxFit.fill,
-                                    image: image,
+                                    image: imageProvider,
                                   ),
                                   borderRadius: BorderRadius.circular(
                                     8.0,
@@ -217,8 +215,9 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                                 height: 225,
                                 width: 150,
                               ),
-                            );
-                          },
+                              errorWidget: (context, url, error) => const Icon(Icons.error),
+                            ),
+                          ),
                         ),
                       ),
                     ),
